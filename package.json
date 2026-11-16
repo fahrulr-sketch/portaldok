@@ -1,0 +1,16 @@
+{
+  "name": "portal-dokumen",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/client.js --bundle --format=iife --minify --outfile=public/client.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^1.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "engines": { "node": ">=20" }
+}
