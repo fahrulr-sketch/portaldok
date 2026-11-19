@@ -1,0 +1,18 @@
+{
+  "name": "portal-dokumen",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/client.js --bundle --format=iife --minify --outfile=public/client.js && node scripts/copy-assets.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^1.0.0",
+    "pdfjs-dist": "6.2.108",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "engines": { "node": ">=20" }
+}
