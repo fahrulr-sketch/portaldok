@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portal Data</title>
+<meta name="description" content="Pusat data untuk keperluan pekerjaan anak magang.">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="/site.css">
+<link rel="preload" as="image" href="/hero.jpg">
+</head>
+<body>
+<header id="nav" data-page="home" data-base="/data"></header>
+
+<main>
+  <section class="hero">
+    <div class="in">
+      <h1>Selamat Datang <span class="o">di Portal Data</span></h1>
+      <p>Pusat data untuk keperluan pekerjaan anak magang.</p>
+      <a class="cta" href="/admin"><span>Login Admin</span><i aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></i></a>
+    </div>
+  </section>
+
+  <section class="sec" id="klasifikasi">
+    <h2>Jelajahi klasifikasi data</h2>
+    <p class="lead">Pilih klasifikasi untuk melihat, mempratinjau, dan mengunduh dokumen tanpa perlu login.</p>
+    <div class="cards" id="cards"></div>
+  </section>
+</main>
+
+<footer class="foot">&copy; <span id="yr"></span> Portal Data</footer>
+
+<script src="/categories.js"></script>
+<script src="/site.js"></script>
+<script>
+(function () {
+  const cats = window.PORTAL_CATEGORIES || [];
+  const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="#0b4fa8"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>';
+  const box = document.getElementById('cards');
+  const draw = counts => {
+    box.innerHTML = cats.map(c => `<a class="card" href="/data#/${encodeURIComponent(c)}"><div class="ci">${icon}</div><b>${esc(c)}</b><span>${counts ? (counts[c] || 0) + ' dokumen' : 'Buka klasifikasi'}</span></a>`).join('');
+  };
+  draw(null);
+  fetch('/api/tree').then(r => r.ok ? r.json() : Promise.reject()).then(d => {
+    const n = {}; d.files.forEach(f => { n[f.path[0]] = (n[f.path[0]] || 0) + 1; }); draw(n);
+  }).catch(() => {});
+  document.getElementById('yr').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
